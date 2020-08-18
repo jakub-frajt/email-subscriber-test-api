@@ -1,0 +1,1 @@
+Simple Testing API that simulate REST API for subscribe to the newsletter. It serves as an auxiliary API to applicants for the position of frontend developer, where it simulates a real endpoint for fulfilling a specified frontend task.
