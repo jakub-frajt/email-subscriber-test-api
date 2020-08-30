@@ -18,7 +18,10 @@ function sendJsonResponse(string $status, string $message): void
             'status'  => $status,
             'message' => $message,
         ],
-        $status === STATUS_ERROR ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK
+        $status === STATUS_ERROR ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK,
+        [
+            'Access-Control-Allow-Origin'  => '*',
+        ]
     );
 
     $response->send();
@@ -27,6 +30,17 @@ function sendJsonResponse(string $status, string $message): void
 
 $request   = Request::createFromGlobals();
 $validator = Validation::createValidator();
+
+if ($request->isMethod('OPTIONS')) {
+    $response = new Response('', Response::HTTP_OK, [
+        'Access-Control-Allow-Origin'  => '*',
+        'Access-Control-Allow-Methods' => 'POST',
+        'Access-Control-Allow-Headers' => 'Content-Type',
+    ]);
+
+    $response->send();
+    exit();
+}
 
 if ($request->isMethod('POST') === false) {
     sendJsonResponse(STATUS_ERROR, 'Invalid request method. API accepts POST requests only.');
